@@ -6,9 +6,17 @@ import CandidateAiAgent from './CandidateAiAgent';
 
 export default function CandidateDashboardClient({ candidate, applications }) {
   const [activeTab, setActiveTab] = useState('applied-jobs');
-  const [skills, setSkills] = useState(JSON.parse(candidate.skills || '[]'));
-  const [education, setEducation] = useState(JSON.parse(candidate.education || '[]'));
-  const [experience, setExperience] = useState(JSON.parse(candidate.experience || '[]'));
+  const safeParse = (val, fallback = []) => {
+    if (!val) return fallback;
+    if (typeof val === 'string') {
+      try { return JSON.parse(val); } catch (e) { return fallback; }
+    }
+    return val;
+  };
+
+  const [skills, setSkills] = useState(safeParse(candidate.skills));
+  const [education, setEducation] = useState(safeParse(candidate.education));
+  const [experience, setExperience] = useState(safeParse(candidate.experience));
   const [phone, setPhone] = useState(candidate.phone_number || '');
   const [salary, setSalary] = useState(candidate.minimum_salary || '');
   const [coverLetter, setCoverLetter] = useState(candidate.cover_letter || '');
