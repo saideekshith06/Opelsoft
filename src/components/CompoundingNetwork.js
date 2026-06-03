@@ -17,7 +17,7 @@ const INTEGRATION_TABS = {
   ai_core: {
     label: '2. Cognitive Match Core',
     title: 'Advanced LLM Relevance Reasoning',
-    description: 'Compare candidate resume vector coordinates against scraped job parameters using Claude 3.5 & Gemini. Automatically isolate skill gaps.',
+    description: 'Compare candidate resume vector coordinates against scraped job parameters using Groq-accelerated Llama 3.3. Automatically isolate skill gaps.',
     kpis: [
       { value: '0.85s', label: 'EVALUATION SPEED' },
       { value: '96.4%', label: 'MATCH RELEVANCE' },
@@ -45,8 +45,8 @@ const NODES_DATA = [
   { id: 'workday', type: 'blue', tab: 'inputs', title: 'Workday Parser', status: 'Synced', icon: '📦' },
   
   // Column 2: AI Core
-  { id: 'claude', type: 'emerald', tab: 'ai_core', title: 'Claude 3.5 Engine', status: 'Scoring match', icon: '🧠' },
-  { id: 'gemini', type: 'emerald', tab: 'ai_core', title: 'Gemini 1.5 Pro', status: 'Scanning gaps', icon: '✨' },
+  { id: 'groq', type: 'emerald', tab: 'ai_core', title: 'Groq LPU Engine', status: 'Scoring match', icon: '🧠' },
+  { id: 'llama', type: 'emerald', tab: 'ai_core', title: 'Llama 3.3 70B', status: 'Scanning gaps', icon: '✨' },
   { id: 'vector', type: 'emerald', tab: 'ai_core', title: 'Vector Embeddings', status: 'Scored 94% fit', icon: '📊' },
   
   // Column 3: Outputs

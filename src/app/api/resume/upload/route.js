@@ -46,7 +46,7 @@ export async function POST(request) {
     RESUME TEXT:
     ${pdfText}`;
 
-    // 1. LLM parsing via shared helper (Groq primary -> Gemini -> Claude -> OpenAI)
+    // 1. LLM parsing via shared helper (Groq)
     const parsed = await callLLMForJson(parsePrompt, {
       system: 'You are a precise resume parser. Return ONLY valid JSON.',
       maxTokens: 2000,
@@ -114,7 +114,7 @@ export async function POST(request) {
       success: true, 
       profile: mockProfile, 
       fallback: true,
-      message: 'Parsed via developer fallback (add GEMINI_API_KEY in .env.local to enable real LLM parsing).'
+      message: 'Parsed via developer fallback (add GROQ_API_KEY in .env.local to enable real LLM parsing).'
     });
 
   } catch (error) {
