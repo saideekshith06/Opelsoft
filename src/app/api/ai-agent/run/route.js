@@ -1,6 +1,11 @@
 import { getAuthUser } from '@/lib/auth';
 import { executeAgentPipeline } from '@/lib/agentRunner';
+import { closeScraperBrowser } from '@/lib/scraper';
 import { NextResponse } from 'next/server';
+
+// The pipeline drives a headless browser (Playwright), so it must run in the Node runtime.
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(request) {
   const logs = [];
@@ -32,5 +37,8 @@ export async function POST(request) {
     addLog(`CRITICAL ERROR DURING WORKFLOW RUN: ${error.message}`, 'error');
     console.error('AI Run Scraper matching pipeline error:', error);
     return NextResponse.json({ success: false, logs, message: error.message }, { status: 500 });
+  } finally {
+    // Always release the headless browser, even if the pipeline threw.
+    await closeScraperBrowser();
   }
 }

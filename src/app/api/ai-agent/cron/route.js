@@ -1,6 +1,11 @@
 import pool from '@/lib/db';
 import { executeAgentPipeline } from '@/lib/agentRunner';
+import { closeScraperBrowser } from '@/lib/scraper';
 import { NextResponse } from 'next/server';
+
+// The pipeline drives a headless browser (Playwright), so it must run in the Node runtime.
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function GET(request) {
   try {
@@ -53,5 +58,8 @@ export async function GET(request) {
       { success: false, message: 'Server error during background scraper execution.' },
       { status: 500 }
     );
+  } finally {
+    // Release the shared headless browser once all candidates are processed.
+    await closeScraperBrowser();
   }
 }

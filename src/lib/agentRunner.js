@@ -1,4 +1,6 @@
 import pool from './db';
+import { callLLMForJson } from './llm.js';
+import { scrapeCustomCareerPage, closeScraperBrowser } from './scraper.js';
 
 // Extractor: Parse Greenhouse token
 function parseGreenhouseToken(url) {
@@ -119,52 +121,21 @@ export async function executeAgentPipeline(userId, addLog) {
           throw new Error(`Lever API returned status ${res.status}`);
         }
       } else {
-        addLog(`Custom Corporate ATS detected. Running playbooks and semantic HTML extractor...`, 'info');
-        
-        const companyName = source.url.replace(/^https?:\/\/(?:www\.)?([^.]+)\..*$/i, '$1');
-        const capitalizedComp = companyName.charAt(0).toUpperCase() + companyName.slice(1);
-        const mockJobTitle = preferredRoles[Math.floor(Math.random() * preferredRoles.length)] || 'Senior Software Engineer';
-        const mockUrl = `${source.url}/careers/job-${Math.floor(Math.random() * 100000)}`;
-        
-        jobsScraped = [
-          {
-            company_name: capitalizedComp,
-            job_title: mockJobTitle,
-            url: mockUrl,
-            ats_type: 'custom',
-            job_type: 'Full-time',
-            location: targetLocations[0] || 'London, UK',
-            description: `Join us at ${capitalizedComp} as a ${mockJobTitle}. We are seeking an engineer experienced in modern JS frameworks, APIs, and scalable infrastructure.`,
-            raw_content: 'Mocked HTML crawl extraction'
-          }
-        ];
-        addLog(`HTML crawler successfully extracted ${jobsScraped.length} jobs from custom page.`, 'success');
+        addLog(`Custom Corporate ATS detected. Rendering page with headless browser and extracting listings...`, 'info');
+        jobsScraped = await scrapeCustomCareerPage(source.url, { preferredRoles, addLog });
+        if (jobsScraped.length > 0) {
+          addLog(`Browser scraper extracted ${jobsScraped.length} real jobs from custom page.`, 'success');
+        }
       }
 
-      // Update source status to active
-      await pool.query("UPDATE new_ai_career_sources SET status = 'active', last_scraped_at = NOW() WHERE id = ?", [source.id]);
+      // Update source status based on whether we actually reached/extracted anything
+      const reachedStatus = jobsScraped.length > 0 ? 'active' : 'unreachable';
+      await pool.query("UPDATE new_ai_career_sources SET status = ?, last_scraped_at = NOW() WHERE id = ?", [reachedStatus, source.id]);
 
     } catch (err) {
-      addLog(`Crawling failed for ${source.url}: ${err.message}. Generating mock fallback jobs...`, 'warn');
-      
-      const companyName = source.url.replace(/^https?:\/\/(?:www\.)?([^.]+)\..*$/i, '$1');
-      const capitalizedComp = companyName.charAt(0).toUpperCase() + companyName.slice(1);
-      const fallbackTitle = preferredRoles[0] || 'Fullstack React Developer';
-      
-      jobsScraped = [
-        {
-          company_name: capitalizedComp,
-          job_title: fallbackTitle,
-          url: `${source.url}/careers/job-fallback-${Math.floor(Math.random() * 100000)}`,
-          ats_type: 'custom',
-          job_type: 'Full-time',
-          location: 'Remote',
-          description: `A stellar engineering opening for a ${fallbackTitle} at ${capitalizedComp}. Requires knowledge of Node.js, Next.js, and SQL databases.`,
-          raw_content: 'Fallback placeholder extraction'
-        }
-      ];
-      
-      await pool.query("UPDATE new_ai_career_sources SET status = 'unreachable' WHERE id = ?", [source.id]);
+      addLog(`Crawling failed for ${source.url}: ${err.message}. No jobs recorded for this source.`, 'warn');
+      jobsScraped = [];
+      await pool.query("UPDATE new_ai_career_sources SET status = 'unreachable', last_scraped_at = NOW() WHERE id = ?", [source.id]);
     }
 
     // Deduplication and database storage
@@ -239,108 +210,19 @@ Return ONLY valid JSON (no markdown, no explanation) with these exact fields:
   "missing_skills": [<array of strings>]
 }`;
 
-    // Try Gemini API first
-    if (!matchResult && process.env.GEMINI_API_KEY) {
-      try {
-        addLog('Calling Gemini 2.0 Flash for LLM scoring...', 'info');
-        const geminiRes = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: scoringPrompt }] }],
-              generationConfig: { temperature: 0.2, maxOutputTokens: 600 }
-            }),
-            signal: AbortSignal.timeout(12000)
-          }
-        );
-        if (geminiRes.ok) {
-          const geminiData = await geminiRes.json();
-          const rawText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-          const jsonStr = rawText.replace(/```json?\n?/g, '').replace(/```/g, '').trim();
-          const jsonBlock = jsonStr.match(/\{[\s\S]*\}/);
-          if (jsonBlock) {
-            matchResult = JSON.parse(jsonBlock[0]);
-            addLog(`Gemini scored "${job.job_title}" → ${matchResult.match_score}%`, 'success');
-          }
-        } else {
-          throw new Error(`Gemini API status ${geminiRes.status}`);
-        }
-      } catch (gemErr) {
-        addLog(`Gemini scoring failed: ${gemErr.message}. Trying Claude...`, 'warn');
-      }
-    }
-
-    // Try Claude API second
-    if (!matchResult && process.env.ANTHROPIC_API_KEY) {
-      try {
-        addLog('Calling Claude 3.5 Sonnet for LLM scoring...', 'info');
-        const apiRes = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': process.env.ANTHROPIC_API_KEY,
-            'anthropic-version': '2023-06-01'
-          },
-          body: JSON.stringify({
-            model: 'claude-3-5-sonnet-20241022',
-            max_tokens: 600,
-            messages: [{ role: 'user', content: scoringPrompt }]
-          }),
-          signal: AbortSignal.timeout(12000)
-        });
-        if (apiRes.ok) {
-          const rawData = await apiRes.json();
-          const textContent = rawData.content[0].text || '';
-          const jsonStr = textContent.replace(/```json?\n?/g, '').replace(/```/g, '').trim();
-          const jsonBlock = jsonStr.match(/\{[\s\S]*\}/);
-          if (jsonBlock) {
-            matchResult = JSON.parse(jsonBlock[0]);
-            addLog(`Claude scored "${job.job_title}" → ${matchResult.match_score}%`, 'success');
-          }
-        } else {
-          throw new Error(`Anthropic API status ${apiRes.status}`);
-        }
-      } catch (apiErr) {
-        addLog(`Claude scoring failed: ${apiErr.message}. Using heuristic fallback...`, 'warn');
-      }
-    }
-
-    // Try OpenAI API third
-    if (!matchResult && process.env.OPENAI_API_KEY) {
-      try {
-        addLog('Calling OpenAI (ChatGPT) for LLM scoring...', 'info');
-        const apiRes = await fetch('https://api.openai.com/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-          },
-          body: JSON.stringify({
-            model: 'gpt-4o-mini',
-            response_format: { type: 'json_object' },
-            messages: [
-              { role: 'system', content: 'You are a Senior AI Recruiting Agent. Return ONLY valid JSON.' },
-              { role: 'user', content: scoringPrompt }
-            ]
-          }),
-          signal: AbortSignal.timeout(12000)
-        });
-        if (apiRes.ok) {
-          const rawData = await apiRes.json();
-          const textContent = rawData.choices[0].message.content || '';
-          const jsonStr = textContent.replace(/```json?\n?/g, '').replace(/```/g, '').trim();
-          const jsonBlock = jsonStr.match(/\{[\s\S]*\}/);
-          if (jsonBlock) {
-            matchResult = JSON.parse(jsonBlock[0]);
-            addLog(`ChatGPT scored "${job.job_title}" → ${matchResult.match_score}%`, 'success');
-          }
-        } else {
-          throw new Error(`OpenAI API status ${apiRes.status}`);
-        }
-      } catch (apiErr) {
-        addLog(`ChatGPT scoring failed: ${apiErr.message}. Using heuristic fallback...`, 'warn');
+    // LLM scoring via shared helper (Groq primary -> Gemini -> Claude -> OpenAI)
+    if (!matchResult) {
+      addLog('Scoring match with LLM (Groq primary)...', 'info');
+      const scored = await callLLMForJson(scoringPrompt, {
+        system: 'You are a Senior AI Recruiting Agent. Return ONLY valid JSON.',
+        maxTokens: 600,
+        addLog
+      });
+      if (scored && typeof scored.match_score !== 'undefined') {
+        matchResult = scored;
+        addLog(`LLM scored "${job.job_title}" → ${matchResult.match_score}%`, 'success');
+      } else {
+        addLog('LLM scoring unavailable. Using heuristic fallback...', 'warn');
       }
     }
 

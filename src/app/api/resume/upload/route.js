@@ -1,5 +1,9 @@
 import { getAuthUser } from '@/lib/auth';
+import { callLLMForJson } from '@/lib/llm';
 import { NextResponse } from 'next/server';
+
+export const runtime = 'nodejs';
+
 export async function POST(request) {
   try {
     const session = getAuthUser(request);
@@ -42,115 +46,17 @@ export async function POST(request) {
     RESUME TEXT:
     ${pdfText}`;
 
-    // 1. Try Gemini API first (Text Only)
-    if (process.env.GEMINI_API_KEY) {
-      try {
-        console.log('Sending extracted CV text to Gemini 2.0 Flash for parsing...');
-        const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{
-                parts: [{ text: parsePrompt }]
-              }],
-              generationConfig: {
-                temperature: 0.1,
-                maxOutputTokens: 2000,
-                responseMimeType: "application/json"
-              }
-            })
-          }
-        );
-
-        if (response.ok) {
-          const resData = await response.json();
-          const rawText = resData?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-          const parsed = JSON.parse(rawText.trim());
-          return NextResponse.json({ success: true, profile: parsed });
-        } else {
-          console.warn('Gemini API CV parser failed with status:', response.status);
-        }
-      } catch (err) {
-        console.error('Gemini CV parsing error:', err);
-      }
+    // 1. LLM parsing via shared helper (Groq primary -> Gemini -> Claude -> OpenAI)
+    const parsed = await callLLMForJson(parsePrompt, {
+      system: 'You are a precise resume parser. Return ONLY valid JSON.',
+      maxTokens: 2000,
+      temperature: 0.1
+    });
+    if (parsed && (parsed.job_title || parsed.skills || parsed.experience)) {
+      return NextResponse.json({ success: true, profile: parsed });
     }
 
-    // 2. Try Anthropic Claude 3.5 (text) second
-    if (process.env.ANTHROPIC_API_KEY) {
-      try {
-        console.log('Sending extracted CV text to Claude 3.5 for parsing...');
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': process.env.ANTHROPIC_API_KEY,
-            'anthropic-version': '2023-06-01'
-          },
-          body: JSON.stringify({
-            model: 'claude-3-5-sonnet-20241022',
-            max_tokens: 2000,
-            messages: [{
-              role: 'user',
-              content: parsePrompt
-            }]
-          })
-        });
-
-        if (response.ok) {
-          const resData = await response.json();
-          const rawText = resData.content[0].text || '';
-          const parsed = JSON.parse(rawText.trim());
-          return NextResponse.json({ success: true, profile: parsed });
-        } else {
-          console.warn('Claude API CV parser failed with status:', response.status);
-        }
-      } catch (err) {
-        console.error('Claude CV parsing error:', err);
-      }
-    }
-
-    // 2.5 Try OpenAI (ChatGPT) API third
-    if (process.env.OPENAI_API_KEY) {
-      try {
-        console.log('Sending extracted CV text to OpenAI (ChatGPT) for parsing...');
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-          },
-          body: JSON.stringify({
-            model: 'gpt-4o-mini',
-            messages: [
-              {
-                role: 'system',
-                content: 'You are a precise resume parser. Return ONLY valid JSON.'
-              },
-              {
-                role: 'user',
-                content: parsePrompt
-              }
-            ],
-            response_format: { type: 'json_object' }
-          })
-        });
-
-        if (response.ok) {
-          const resData = await response.json();
-          const rawText = resData.choices[0].message.content || '';
-          const parsed = JSON.parse(rawText.trim());
-          return NextResponse.json({ success: true, profile: parsed });
-        } else {
-          console.warn('OpenAI API CV parser failed with status:', response.status);
-        }
-      } catch (err) {
-        console.error('OpenAI CV parsing error:', err);
-      }
-    }
-
-    // 3. Heuristic / mock parsed fallback when keys are missing
+    // 2. Heuristic / mock parsed fallback when keys are missing or all providers failed
     console.log('Using fallback parser for resume parsing (no API keys defined)...');
     
     // Customize mock values slightly based on file name if possible
