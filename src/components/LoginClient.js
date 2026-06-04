@@ -22,7 +22,10 @@ export default function LoginClient({ candidate, employer }) {
       });
       const data = await res.json();
       if (data.success) {
-        router.refresh();
+        // Do NOT call router.refresh() here: refreshing /login around the push
+        // races with the navigation and can strand the user on /login. The
+        // target dashboards are force-dynamic, so they render fresh with the
+        // new session on navigation.
         if (data.user.role === 'candidate') {
           router.push('/dashboard/candidate');
         } else if (data.user.role === 'employer') {
