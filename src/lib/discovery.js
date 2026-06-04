@@ -124,6 +124,52 @@ async function discoverViaSerpApi(roles, locations, log) {
   return found;
 }
 
+// --- Source 3: DuckDuckGo (no API key) parsed with Cheerio ---
+async function discoverViaDuckDuckGo(roles, locations, log) {
+  const queries = buildQueries(roles, locations);
+  const found = [];
+  let load;
+  try {
+    ({ load } = await import('cheerio'));
+  } catch (e) {
+    log(`Discovery: cheerio unavailable (${e.message}); skipping DuckDuckGo.`, 'warn');
+    return [];
+  }
+
+  for (const q of queries) {
+    try {
+      log(`Discovery: DuckDuckGo search "${q}"...`, 'info');
+      // The /html endpoint returns plain server-rendered results (no JS, no key).
+      const res = await fetch('https://html.duckduckgo.com/html/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36',
+        },
+        body: `q=${encodeURIComponent(q)}`,
+        signal: AbortSignal.timeout(15000),
+      });
+      if (!res.ok) throw new Error(`DuckDuckGo status ${res.status}`);
+      const html = await res.text();
+      const $ = load(html);
+      $('a.result__a').each((_, el) => {
+        let href = $(el).attr('href') || '';
+        // DDG wraps links as //duckduckgo.com/l/?uddg=<encoded real url>
+        const m = href.match(/[?&]uddg=([^&]+)/);
+        if (m) href = decodeURIComponent(m[1]);
+        const norm = normalizeUrl(href);
+        if (norm && looksLikeCareerUrl(norm)) {
+          found.push({ url: norm, company: $(el).text().trim() });
+        }
+      });
+    } catch (err) {
+      log(`Discovery: DuckDuckGo query failed: ${err.message}`, 'warn');
+    }
+  }
+  log(`Discovery: DuckDuckGo yielded ${found.length} career-like URLs.`, found.length ? 'success' : 'warn');
+  return found;
+}
+
 /**
  * Discover relevant career-page URLs for a candidate's preferences.
  * @param {object} opts
@@ -136,15 +182,16 @@ export async function discoverCareerPages(opts = {}) {
   const { preferredRoles = [], targetLocations = [], addLog } = opts;
   const log = typeof addLog === 'function' ? addLog : () => {};
 
-  const [groqUrls, serpUrls] = await Promise.all([
+  const [groqUrls, serpUrls, ddgUrls] = await Promise.all([
     discoverViaGroqCompound(preferredRoles, targetLocations, log),
     discoverViaSerpApi(preferredRoles, targetLocations, log),
+    discoverViaDuckDuckGo(preferredRoles, targetLocations, log),
   ]);
 
-  // Merge + dedup by URL
+  // Merge + dedup by URL (Groq first, then SerpApi, then DuckDuckGo)
   const seen = new Set();
   const merged = [];
-  for (const item of [...groqUrls, ...serpUrls]) {
+  for (const item of [...groqUrls, ...serpUrls, ...ddgUrls]) {
     if (!item.url || seen.has(item.url)) continue;
     seen.add(item.url);
     merged.push(item);
