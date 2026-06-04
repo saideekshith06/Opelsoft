@@ -6,14 +6,7 @@ import { usePathname } from 'next/navigation';
 
 const TALENT_NAV = { name: 'Talent & Staffing', path: '/talent-staffing' };
 
-const CANDIDATE_NAV = {
-  name: 'For Candidates',
-  dropdown: [
-    { name: 'My Dashboard', path: '/dashboard/candidate' },
-    { name: 'My Applications', path: '/dashboard/candidate?tab=applied-jobs' },
-    { name: 'Browse Jobs', path: '/jobs' },
-  ],
-};
+const CANDIDATE_NAV = { name: 'For Candidates', path: '/dashboard/candidate' };
 
 // Shown only when an employer is signed in.
 const EMPLOYER_NAV = {
