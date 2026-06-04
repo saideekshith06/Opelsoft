@@ -1,10 +1,10 @@
 import pool from '@/lib/db';
 import Link from 'next/link';
+import Reveal from '@/components/ui/Reveal';
+import SaveButton from '@/components/ui/SaveButton';
 
-// Fetch jobs based on filter parameters
 async function getFilteredJobs(searchParams) {
-  const { keyword, location, job_type, industry, experience, salary } = searchParams;
-
+  const { keyword, location, job_type, industry, city } = searchParams;
   let query = `
     SELECT j.id, j.title, j.job_type, j.salary_package, j.address, j.city, j.country, j.industry, j.experience, j.created_at,
            e.company_name, e.logo_url
@@ -13,222 +13,130 @@ async function getFilteredJobs(searchParams) {
     WHERE j.status = 'active'
   `;
   const params = [];
-
-  if (keyword) {
-    query += ` AND (j.title LIKE ? OR j.description LIKE ? OR e.company_name LIKE ?)`;
-    params.push(`%${keyword}%`, `%${keyword}%`, `%${keyword}%`);
-  }
-
-  if (location) {
-    query += ` AND (j.city LIKE ? OR j.country LIKE ? OR j.address LIKE ?)`;
-    params.push(`%${location}%`, `%${location}%`, `%${location}%`);
-  }
-
-  if (job_type) {
-    query += ` AND j.job_type = ?`;
-    params.push(job_type);
-  }
-
-  if (industry) {
-    query += ` AND j.industry = ?`;
-    params.push(industry);
-  }
-
-  if (experience) {
-    query += ` AND j.experience = ?`;
-    params.push(experience);
-  }
-
-  if (salary) {
-    query += ` AND j.salary_package LIKE ?`;
-    params.push(`%${salary}%`);
-  }
-
+  if (keyword) { query += ` AND (j.title LIKE ? OR j.description LIKE ? OR e.company_name LIKE ?)`; params.push(`%${keyword}%`, `%${keyword}%`, `%${keyword}%`); }
+  if (location) { query += ` AND (j.city LIKE ? OR j.country LIKE ? OR j.address LIKE ?)`; params.push(`%${location}%`, `%${location}%`, `%${location}%`); }
+  if (job_type) { query += ` AND j.job_type = ?`; params.push(job_type); }
+  if (industry) { query += ` AND j.industry = ?`; params.push(industry); }
+  if (city) { query += ` AND j.city = ?`; params.push(city); }
   query += ` ORDER BY j.created_at DESC`;
 
   try {
     const [jobs] = await pool.query(query, params);
-    
-    // Fetch unique categories for sidebar filters
     const [dbJobTypes] = await pool.query("SELECT DISTINCT job_type FROM new_jobs WHERE job_type != '' AND job_type IS NOT NULL");
     const [dbIndustries] = await pool.query("SELECT DISTINCT industry FROM new_jobs WHERE industry != '' AND industry IS NOT NULL LIMIT 15");
     const [dbLocations] = await pool.query("SELECT DISTINCT city FROM new_jobs WHERE city != '' AND city IS NOT NULL LIMIT 10");
-
-    return {
-      jobs,
-      filterOptions: {
-        jobTypes: dbJobTypes.map(r => r.job_type),
-        industries: dbIndustries.map(r => r.industry),
-        locations: dbLocations.map(r => r.city)
-      }
-    };
+    return { jobs, filterOptions: { jobTypes: dbJobTypes.map((r) => r.job_type), industries: dbIndustries.map((r) => r.industry), locations: dbLocations.map((r) => r.city) } };
   } catch (err) {
-    console.error('Failed to query filtered jobs, using mock fallback:', err);
+    console.error('Failed to query filtered jobs, using fallback:', err);
     return {
       jobs: [
-        { id: 1, title: 'Senior Rolling Stock Technician', job_type: 'Full-time', salary_package: '15000-20000', city: 'London', country: 'United Kingdom', company_name: 'Lawrence Hansen Ltd', industry: 'Management', created_at: new Date() },
-        { id: 2, title: 'Graduate Inside Sales Executive', job_type: 'Internship', salary_package: '10000-12000', city: 'Birmingham', country: 'United Kingdom', company_name: 'Tammy Hicks Ltd', industry: 'Sales & Marketing', created_at: new Date() }
+        { id: 1, title: 'Senior AI/ML Engineer', job_type: 'Full-time', salary_package: '90000-140000', city: 'London', country: 'United Kingdom', company_name: 'DeepMind', industry: 'Artificial Intelligence', experience: 'Senior' },
+        { id: 2, title: 'Robotics Engineer', job_type: 'Full-time', salary_package: '75000-110000', city: 'Cambridge', country: 'United Kingdom', company_name: 'Wayve', industry: 'Robotics', experience: 'Mid' },
       ],
-      filterOptions: {
-        jobTypes: ['Full-time', 'Part-time', 'Internship', 'Temporary'],
-        industries: ['Management', 'Technology', 'Sales & Marketing', 'Accounting & Finance'],
-        locations: ['London', 'Birmingham', 'Manchester']
-      }
+      filterOptions: { jobTypes: ['Full-time', 'Part-time', 'Contract', 'Internship'], industries: ['Artificial Intelligence', 'Robotics', 'Machine Learning', 'Automation'], locations: ['London', 'Cambridge', 'Manchester'] },
     };
   }
 }
 
 export default async function JobsPage({ searchParams }) {
-  // Resolve searchParams promise in Next.js 15+ if needed, but in standard App Router it is passed as plain object or can be awaited.
-  const resolvedParams = await searchParams;
-  const { jobs, filterOptions } = await getFilteredJobs(resolvedParams);
+  const sp = await searchParams;
+  const { jobs, filterOptions } = await getFilteredJobs(sp);
 
   return (
-    <div className="jobs-catalog-page container">
-      {/* Title area */}
-      <div className="catalog-header">
-        <h1>Available <span className="text-gradient">Job Positions</span></h1>
-        <p>Showing {jobs.length} jobs based on your preferences</p>
-      </div>
+    <div style={{ background: 'var(--bg-color)', color: 'var(--text-primary)' }}>
+      {/* HERO + SEARCH */}
+      <section className="op-mesh" style={{ borderBottom: '1px solid var(--border-color)', padding: '64px 0 52px' }}>
+        <div className="container" style={{ maxWidth: '860px', textAlign: 'center' }}>
+          <h1 style={{ fontSize: 'clamp(2.1rem, 5vw, 3.3rem)', fontWeight: '800', letterSpacing: '-0.04em', marginBottom: '14px' }}>
+            Find your next role in <span className="op-grad-text">AI &amp; robotics</span>
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', marginBottom: '28px' }}>{jobs.length} open role{jobs.length === 1 ? '' : 's'} from teams building the future.</p>
+          <form action="/jobs" method="get" className="op-glass" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', padding: '8px', borderRadius: '16px', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-md)', maxWidth: '620px', margin: '0 auto' }}>
+            <input name="keyword" defaultValue={sp.keyword || ''} placeholder="Job title or keyword" className="form-control op-focus" style={{ flex: '1 1 200px', height: '48px', border: 'none', background: 'transparent' }} />
+            <input name="location" defaultValue={sp.location || ''} placeholder="Location" className="form-control op-focus" style={{ flex: '1 1 130px', height: '48px', border: 'none', background: 'transparent', borderLeft: '1px solid var(--border-color)' }} />
+            <button type="submit" className="op-btn op-grad-bg" style={{ height: '48px', padding: '0 26px', borderRadius: '12px', fontWeight: '700', color: '#fff', border: 'none', cursor: 'pointer' }}>Search</button>
+          </form>
+        </div>
+      </section>
 
-      <div className="catalog-layout">
-        {/* Sidebar Filters */}
-        <aside className="filters-sidebar card">
-          <h2 className="filters-title">Filter Search</h2>
-          
-          <form method="GET" action="/jobs" className="filters-form">
-            {/* Preserve keyword and location search */}
-            {resolvedParams.keyword && <input type="hidden" name="keyword" value={resolvedParams.keyword} />}
-            {resolvedParams.location && <input type="hidden" name="location" value={resolvedParams.location} />}
+      <div className="container" style={{ padding: '48px 24px 88px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 260px) 1fr', gap: '32px', alignItems: 'start' }} className="jobs-layout">
 
-            {/* Job Types */}
-            <div className="filter-group">
-              <label className="filter-label">Job Type</label>
-              <div className="filter-options">
-                <label className="checkbox-container">
-                  <input 
-                    type="radio" 
-                    name="job_type" 
-                    value="" 
-                    defaultChecked={!resolvedParams.job_type} 
-                  />
-                  <span>All Types</span>
-                </label>
-                {filterOptions.jobTypes.map((type, i) => (
-                  <label key={i} className="checkbox-container">
-                    <input 
-                      type="radio" 
-                      name="job_type" 
-                      value={type} 
-                      defaultChecked={resolvedParams.job_type === type} 
-                    />
-                    <span>{type}</span>
-                  </label>
+          {/* Filters */}
+          <aside className="card-light" style={{ padding: '24px', position: 'sticky', top: '90px' }}>
+            <h2 style={{ fontSize: '1.05rem', fontWeight: '800', marginBottom: '18px' }}>Filters</h2>
+            <form method="GET" action="/jobs" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {sp.keyword && <input type="hidden" name="keyword" value={sp.keyword} />}
+              {sp.location && <input type="hidden" name="location" value={sp.location} />}
+              <div>
+                <label style={{ fontSize: '0.78rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', display: 'block', marginBottom: '10px' }}>Job Type</label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', cursor: 'pointer' }}><input type="radio" name="job_type" value="" defaultChecked={!sp.job_type} style={{ accentColor: 'var(--op-indigo)' }} /> All types</label>
+                  {filterOptions.jobTypes.map((t, i) => (
+                    <label key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', cursor: 'pointer' }}><input type="radio" name="job_type" value={t} defaultChecked={sp.job_type === t} style={{ accentColor: 'var(--op-indigo)' }} /> {t}</label>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label style={{ fontSize: '0.78rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', display: 'block', marginBottom: '10px' }}>Industry</label>
+                <select name="industry" className="form-control op-focus" defaultValue={sp.industry || ''}>
+                  <option value="">All industries</option>
+                  {filterOptions.industries.map((ind, i) => <option key={i} value={ind}>{ind}</option>)}
+                </select>
+              </div>
+              <div>
+                <label style={{ fontSize: '0.78rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', display: 'block', marginBottom: '10px' }}>City</label>
+                <select name="city" className="form-control op-focus" defaultValue={sp.city || ''}>
+                  <option value="">All cities</option>
+                  {filterOptions.locations.map((loc, i) => <option key={i} value={loc}>{loc}</option>)}
+                </select>
+              </div>
+              <button type="submit" className="op-btn op-grad-bg" style={{ padding: '11px', borderRadius: '12px', fontWeight: '700', color: '#fff', border: 'none', cursor: 'pointer', width: '100%' }}>Apply Filters</button>
+              <Link href="/jobs" className="op-btn" style={{ padding: '10px', borderRadius: '12px', fontWeight: '600', textAlign: 'center', border: '1px solid var(--border-color)', textDecoration: 'none', color: 'var(--text-primary)' }}>Reset</Link>
+            </form>
+          </aside>
+
+          {/* Listings */}
+          <section>
+            {jobs.length === 0 ? (
+              <div className="card-light" style={{ padding: '60px 20px', textAlign: 'center' }}>
+                <div style={{ fontSize: '40px', marginBottom: '14px' }}>🔍</div>
+                <h3 style={{ fontSize: '1.3rem', fontWeight: '800', marginBottom: '8px' }}>No jobs found</h3>
+                <p style={{ color: 'var(--text-secondary)', marginBottom: '20px' }}>Try widening your filters or search keywords.</p>
+                <Link href="/jobs" className="op-btn op-grad-bg" style={{ display: 'inline-block', padding: '12px 26px', borderRadius: '30px', fontWeight: '700', color: '#fff', textDecoration: 'none' }}>Clear filters</Link>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {jobs.map((job, i) => (
+                  <Reveal key={job.id} delay={(i % 3) + 1}>
+                    <div className="card-light hover-lift" style={{ padding: '24px', display: 'flex', gap: '18px', alignItems: 'flex-start' }}>
+                      <div className="op-grad-bg" style={{ width: '52px', height: '52px', borderRadius: '13px', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700', fontSize: '1.3rem', flexShrink: 0 }}>
+                        {job.company_name ? job.company_name.charAt(0) : 'O'}
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--op-indigo)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>{job.industry || 'Technology'}</div>
+                        <h3 style={{ fontSize: '1.2rem', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '4px' }}>
+                          <Link href={`/jobs/${job.id}`} className="op-underline" style={{ color: 'inherit', textDecoration: 'none' }}>{job.title}</Link>
+                        </h3>
+                        <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '12px' }}>{job.company_name || 'OpelSoft Partner'}</div>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                          <span style={{ fontSize: '0.76rem', fontWeight: '600', color: 'var(--text-secondary)', background: 'var(--bg-color)', border: '1px solid var(--border-color)', borderRadius: '20px', padding: '4px 10px' }}>📍 {job.city || 'Multiple'}{job.country ? `, ${job.country}` : ''}</span>
+                          <span style={{ fontSize: '0.76rem', fontWeight: '600', color: 'var(--op-indigo)', background: 'rgba(79,70,229,0.08)', borderRadius: '20px', padding: '4px 10px' }}>{job.job_type || 'Full-time'}</span>
+                          {job.salary_package && <span style={{ fontSize: '0.76rem', fontWeight: '600', color: 'var(--text-secondary)', background: 'var(--bg-color)', border: '1px solid var(--border-color)', borderRadius: '20px', padding: '4px 10px' }}>💷 £{job.salary_package}</span>}
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-end', flexShrink: 0 }}>
+                        <SaveButton />
+                        <Link href={`/jobs/${job.id}`} className="op-btn op-grad-bg" style={{ padding: '8px 16px', borderRadius: '10px', fontSize: '0.84rem', fontWeight: '700', color: '#fff', textDecoration: 'none', whiteSpace: 'nowrap' }}>View role</Link>
+                      </div>
+                    </div>
+                  </Reveal>
                 ))}
               </div>
-            </div>
-
-            {/* Industries */}
-            <div className="filter-group">
-              <label className="filter-label">Industry</label>
-              <select name="industry" className="form-control select-filter" defaultValue={resolvedParams.industry || ''}>
-                <option value="">All Industries</option>
-                {filterOptions.industries.map((ind, i) => (
-                  <option key={i} value={ind}>{ind}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Locations */}
-            <div className="filter-group">
-              <label className="filter-label">City</label>
-              <select name="city" className="form-control select-filter" defaultValue={resolvedParams.city || ''}>
-                <option value="">All Cities</option>
-                {filterOptions.locations.map((loc, i) => (
-                  <option key={i} value={loc}>{loc}</option>
-                ))}
-              </select>
-            </div>
-
-            <button type="submit" className="btn btn-primary btn-full-width">
-              Apply Filters
-            </button>
-            <Link href="/jobs" className="btn btn-outline btn-full-width" style={{ marginTop: '10px', textAlign: 'center' }}>
-              Reset Filters
-            </Link>
-          </form>
-        </aside>
-
-        {/* Jobs List Catalog */}
-        <section className="catalog-jobs-list">
-          {jobs.length === 0 ? (
-            <div className="empty-state card">
-              <div className="empty-icon">📁</div>
-              <h3>No Jobs Found</h3>
-              <p>We couldn't find any job matches. Try widening your filters or search keywords.</p>
-              <Link href="/jobs" className="btn btn-primary" style={{ marginTop: '20px' }}>
-                Clear Filters
-              </Link>
-            </div>
-          ) : (
-            <div className="catalog-jobs-grid">
-              {jobs.map((job) => (
-                <div key={job.id} className="catalog-job-card card">
-                  <div className="catalog-job-main">
-                    <div className="catalog-job-logo-placeholder">
-                      {job.company_name ? job.company_name.charAt(0) : 'J'}
-                    </div>
-                    <div className="catalog-job-body">
-                      <div className="catalog-job-category">{job.industry || 'IT & Software'}</div>
-                      <h3 className="catalog-job-title">
-                        <Link href={`/jobs/${job.id}`}>{job.title}</Link>
-                      </h3>
-                      <div className="catalog-job-company">
-                        {job.company_name || 'Opelsoft Recruiter'}
-                      </div>
-                      
-                      <div className="catalog-job-meta-row">
-                        <div className="job-meta-tag">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--text-light)' }}>
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                          </svg>
-                          {job.city || 'Multiple'}, {job.country || 'UK'}
-                        </div>
-                        <div className="job-meta-tag">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--text-light)' }}>
-                            <rect x="2" y="6" width="20" height="12" rx="2"></rect>
-                            <circle cx="12" cy="12" r="2"></circle>
-                            <path d="M6 12h.01M18 12h.01"></path>
-                          </svg>
-                          {job.salary_package ? `£${job.salary_package}` : 'Salary Undisclosed'}
-                        </div>
-                        <div className="job-meta-tag">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--text-light)' }}>
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                          </svg>
-                          {job.experience || 'Entry-Level'}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="catalog-job-side">
-                    <span className={`job-tag ${job.job_type ? job.job_type.toLowerCase() : 'full-time'}`}>
-                      {job.job_type || 'Full-time'}
-                    </span>
-                    <Link href={`/jobs/${job.id}`} className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '11px' }}>
-                      View Job
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+            )}
+          </section>
+        </div>
       </div>
-
-
     </div>
   );
 }

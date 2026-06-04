@@ -69,6 +69,12 @@
 .op-faq .op-faq-chevron { transition: transform 0.3s var(--op-ease); }
 .op-faq[open] .op-faq-chevron { transform: rotate(180deg); }
 
+/* --- Jobs board responsive layout --- */
+@media (max-width: 860px) {
+  .jobs-layout { grid-template-columns: 1fr !important; }
+  .jobs-layout aside { position: static !important; }
+}
+
 /* --- Reduced motion --- */
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
