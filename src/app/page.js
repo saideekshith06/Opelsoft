@@ -69,10 +69,12 @@ export default async function Home() {
   return (
     <div className="home-page" style={{ background: 'var(--bg-color)', color: 'var(--text-primary)' }}>
 
+      {/* ── HERO + TICKER together fill exactly the first screen ─── */}
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - var(--header-height))' }}>
       {/* ── HERO ─────────────────────────────────────────── */}
-      <section className="op-mesh" style={{ position: 'relative', borderBottom: '1px solid var(--border-color)', padding: '116px 0 104px', overflow: 'hidden' }}>
+      <section className="op-mesh" style={{ position: 'relative', borderBottom: '1px solid var(--border-color)', overflow: 'hidden', flex: '1 1 auto', minHeight: 0, display: 'flex', alignItems: 'center', paddingTop: '36px', paddingBottom: '36px' }}>
         <GeoDecor />
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '56px', alignItems: 'center' }}>
             {/* Left */}
             <Reveal>
@@ -127,8 +129,8 @@ export default async function Home() {
       </section>
 
       {/* ── ROLE TICKER ──────────────────────────────────── */}
-      <section style={{ background: '#fff', borderBottom: '1px solid var(--border-color)', padding: '20px 0' }}>
-        <div className="op-ticker-wrap">
+      <section style={{ background: '#fff', borderBottom: '1px solid var(--border-color)', height: '64px', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+        <div className="op-ticker-wrap" style={{ width: '100%' }}>
           <div className="op-ticker">
             {[...TICKER, ...TICKER].map((r, i) => (
               <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
@@ -138,6 +140,8 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      </div>
+      {/* end first-screen wrapper */}
 
       {/* ── STATS BAR ────────────────────────────────────── */}
       <section style={{ background: '#0B0B0F', color: '#fff', borderBottom: '1px solid var(--border-color)' }}>

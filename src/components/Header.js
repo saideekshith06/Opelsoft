@@ -16,7 +16,7 @@ const EMPLOYER_NAV = {
 
 function buildNav(user) {
   return [
-    { name: 'Home', path: '/' }, { name: 'Find Jobs', path: '/jobs' }, TALENT_NAV, CANDIDATE_NAV, ...(user && user.role === 'employer' ? [EMPLOYER_NAV] : []), { name: 'About Us', path: '/about-us' }, { name: 'Contact', path: '/contact-us' }, ];
+    { name: 'Home', path: '/' }, { name: 'About Us', path: '/about-us' }, TALENT_NAV, CANDIDATE_NAV, { name: 'Find Jobs', path: '/jobs' }, ...(user && user.role === 'employer' ? [EMPLOYER_NAV] : []), { name: 'Contact', path: '/contact-us' }, ];
 }
 
 function DropdownMenu({ items, onMouseEnter, onMouseLeave }) {
