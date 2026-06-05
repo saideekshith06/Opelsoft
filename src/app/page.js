@@ -35,7 +35,7 @@ async function getHomeData() {
   } catch {
     return {
       jobs: [
-        { id: 1, title: 'Senior AI/ML Engineer', job_type: 'Full-time', salary_package: '90000-140000', city: 'London', country: 'UK', company_name: 'DeepMind' }, { id: 2, title: 'Robotics Engineer', job_type: 'Full-time', salary_package: '75000-110000', city: 'Cambridge', country: 'UK', company_name: 'Wayve' }, { id: 3, title: 'Computer Vision Engineer', job_type: 'Contract', salary_package: '80000-120000', city: 'Remote', country: 'UK', company_name: 'Tractable' }, ], industries: [{ industry: 'Artificial Intelligence', count: 24 }, { industry: 'Robotics', count: 18 }, { industry: 'Machine Learning', count: 14 }, { industry: 'Automation', count: 9 }], stats: { jobsCount: 37, usersCount: 6, companiesCount: 25 }, };
+        { id: 1, title: 'Senior AI/ML Engineer', job_type: 'Full-time', salary_package: '120000-180000', city: 'New York, NY', country: 'United States', company_name: 'OpelSoft Partner' }, { id: 2, title: 'Full-Stack Developer', job_type: 'Full-time', salary_package: '110000-160000', city: 'Austin, TX', country: 'United States', company_name: 'OpelSoft Partner' }, { id: 3, title: 'Salesforce Developer', job_type: 'Contract', salary_package: '100000-150000', city: 'Remote', country: 'United States', company_name: 'OpelSoft Partner' }, ], industries: [{ industry: 'Software Development', count: 24 }, { industry: 'IT Consulting', count: 18 }, { industry: 'Data & Cloud', count: 14 }, { industry: 'Salesforce', count: 9 }], stats: { jobsCount: 37, usersCount: 6, companiesCount: 25 }, };
   }
 }
 
@@ -56,7 +56,7 @@ const STEPS = [
 ];
 
 const SERVICES = [
-  { tint: '#4F46E5', name: 'Find Jobs', body: 'Submit your details and get matched to live roles across the US.', href: '/jobs', icon: <><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></> }, { tint: '#7C3AED', name: 'Talent & Staffing', body: 'Contract, direct-hire, and executive search for technical and professional teams.', href: '/talent-staffing', icon: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></> }, { tint: '#0EA5E9', name: 'Enterprise Solutions', body: 'Software development and IT consulting for Fortune 500 clients.', href: '/enterprise-solutions', icon: <><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></> }, { tint: '#10B981', name: 'Application Tracking', body: 'A single dashboard to follow every application from submitted to offer.', href: '/jobs', icon: <path d="M22 12h-4l-3 9L9 3l-3 9H2" /> }, { tint: '#F59E0B', name: 'Executive Search', body: 'Confidential senior-leadership and C-suite placement, matched to fit.', href: '/talent-staffing#solutions', icon: <><circle cx="12" cy="8" r="6" /><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5" /></> }, { tint: '#EF4444', name: 'Career Resources', body: 'Guidance and a growing library to help you take the next step.', href: '/about-us', icon: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></> },
+  { tint: '#4F46E5', name: 'Find Jobs', body: 'Submit your details and get matched to live roles across the US.', href: '/jobs', icon: <><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></> }, { tint: '#7C3AED', name: 'Talent & Staffing', body: 'Contract, direct-hire, and executive search for technical and professional teams.', href: '/talent-staffing', icon: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></> }, { tint: '#0EA5E9', name: 'Enterprise Solutions', body: 'Software development and IT consulting for Fortune 500 clients.', href: '/enterprise-solutions', icon: <><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></> }, { tint: '#10B981', name: 'Contract Staffing', body: 'Flexible, vetted professionals embedded with your team for as long as you need.', href: '/talent-staffing', icon: <path d="M22 12h-4l-3 9L9 3l-3 9H2" /> }, { tint: '#F59E0B', name: 'Executive Search', body: 'Confidential senior-leadership and C-suite placement, matched to fit.', href: '/talent-staffing#solutions', icon: <><circle cx="12" cy="8" r="6" /><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5" /></> }, { tint: '#EF4444', name: 'About OpelSoft', body: 'Learn who we are and the industries we serve across the US.', href: '/about-us', icon: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></> },
 ];
 
 const FAQS = [
@@ -91,7 +91,7 @@ export default async function Home() {
                 </span>
               </h1>
               <p style={{ fontSize: 'clamp(1.05rem, 2vw, 1.25rem)', color: 'var(--text-secondary)', lineHeight: '1.6', maxWidth: '520px', marginBottom: '30px' }}>
-                OpelSoft connects talented people with great companies. Discover roles, build your profile, and apply in clicks, all in one place.
+                OpelSoft connects talented people with great companies. Share your details and our recruiters match you with the right opportunities, fast.
               </p>
 
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center' }}>
@@ -100,7 +100,7 @@ export default async function Home() {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
                 </Link>
                 <Link href="/jobs" className="op-btn" style={{ padding: '15px 32px', borderRadius: '14px', fontWeight: '700', fontSize: '1.02rem', border: '1px solid var(--border-color)', background: '#fff', color: '#09090b', textDecoration: 'none' }}>
-                  Create your profile
+                  Submit your details
                 </Link>
               </div>
             </Reveal>
