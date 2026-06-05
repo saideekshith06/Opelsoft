@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Reveal from '@/components/ui/Reveal';
-import CountUp from '@/components/ui/CountUp';
 import Decor from '@/components/ui/Decor';
 import StatsBand from '@/components/ui/StatsBand';
 
