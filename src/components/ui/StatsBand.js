@@ -3,7 +3,7 @@ import Reveal from './Reveal';
 
 // A stats band rendered as elevated cards (icon + number + label).
 // tone: 'dark' | 'grad' | 'light'. items: [{ v, s, label, icon, tint }]
-const STROKE = { dark: '#c4b5fd', grad: '#ffffff' };
+const STROKE = { dark: '#c4b5fd', grad: '#ffffff', slate: '#c4b5fd' };
 
 export default function StatsBand({ items, tone = 'dark', decor = null, padded = true }) {
   return (

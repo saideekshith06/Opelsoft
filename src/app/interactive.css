@@ -296,3 +296,11 @@
 .sb-light .sb-card:hover { box-shadow: 0 20px 42px -24px rgba(15, 23, 42, 0.22); }
 .sb-light .sb-num { background: var(--op-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .sb-light .sb-lbl { color: var(--text-secondary); }
+
+/* Slate (dark, not pure black) stats tone */
+.sb-slate { background: radial-gradient(70% 130% at 50% 0%, rgba(79, 70, 229, 0.20), transparent 60%), linear-gradient(180deg, #1e293b 0%, #0f172a 100%); }
+.sb-slate .sb-card { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.10); }
+.sb-slate .sb-card:hover { background: rgba(255, 255, 255, 0.08); box-shadow: 0 22px 44px -22px rgba(0, 0, 0, 0.6); }
+.sb-slate .sb-ic { background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12); }
+.sb-slate .sb-num { background: linear-gradient(135deg, #a5b4fc, #d8b4fe 55%, #7dd3fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.sb-slate .sb-lbl { color: rgba(255, 255, 255, 0.6); }

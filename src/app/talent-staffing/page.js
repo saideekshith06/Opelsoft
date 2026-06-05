@@ -73,8 +73,8 @@ export default function TalentStaffingPage() {
         </div>
       </section>
 
-      {/* STATS — light card band */}
-      <StatsBand tone="light" items={[
+      {/* STATS — slate card band */}
+      <StatsBand tone="slate" items={[
         { v: 6, s: '', label: 'Specialisms', icon: <><path d="M12 2 2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5M2 12l10 5 10-5" /></> },
         { v: 4, s: '', label: 'Engagement models', icon: <><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></> },
         { v: 20, s: '+', label: 'Industries served', icon: <><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></> },
