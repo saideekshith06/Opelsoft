@@ -3,6 +3,17 @@ import Link from 'next/link';
 import Reveal from '@/components/ui/Reveal';
 import SaveButton from '@/components/ui/SaveButton';
 
+// Format "90000-140000" as "£90,000 to £140,000"
+export function formatSalary(pkg) {
+  if (!pkg) return null;
+  const fmt = (n) => {
+    const x = Number(String(n).replace(/[^0-9.]/g, ''));
+    return Number.isNaN(x) || x === 0 ? String(n).trim() : '£' + x.toLocaleString('en-GB');
+  };
+  const parts = String(pkg).split('-').map((s) => s.trim()).filter(Boolean);
+  return parts.length >= 2 ? `${fmt(parts[0])} to ${fmt(parts[1])}` : fmt(parts[0]);
+}
+
 async function getFilteredJobs(searchParams) {
   const { keyword, location, job_type, industry, city } = searchParams;
   let query = `
@@ -121,7 +132,7 @@ export default async function JobsPage({ searchParams }) {
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                           <span style={{ fontSize: '0.76rem', fontWeight: '600', color: 'var(--text-secondary)', background: 'var(--bg-color)', border: '1px solid var(--border-color)', borderRadius: '20px', padding: '4px 10px' }}>📍 {job.city || 'Multiple'}{job.country ? `, ${job.country}` : ''}</span>
                           <span style={{ fontSize: '0.76rem', fontWeight: '600', color: 'var(--op-indigo)', background: 'rgba(79,70,229,0.08)', borderRadius: '20px', padding: '4px 10px' }}>{job.job_type || 'Full-time'}</span>
-                          {job.salary_package && <span style={{ fontSize: '0.76rem', fontWeight: '600', color: 'var(--text-secondary)', background: 'var(--bg-color)', border: '1px solid var(--border-color)', borderRadius: '20px', padding: '4px 10px' }}>💷 £{job.salary_package}</span>}
+                          {job.salary_package && <span style={{ fontSize: '0.76rem', fontWeight: '600', color: 'var(--text-secondary)', background: 'var(--bg-color)', border: '1px solid var(--border-color)', borderRadius: '20px', padding: '4px 10px' }}>💷 {formatSalary(job.salary_package)}</span>}
                         </div>
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-end', flexShrink: 0 }}>

@@ -142,7 +142,7 @@ export default function CandidateDashboardClient({ candidate, applications }) {
       {/* Upper Profile Card */}
       <div className="profile-header-card card">
         <div className="profile-header-main">
-          <div className="avatar-placeholder">
+          <div className="avatar-placeholder" style={{ background: 'var(--op-grad)', color: '#fff' }}>
             {candidate.username.substring(0, 2).toUpperCase()}
           </div>
           <div>
@@ -156,7 +156,7 @@ export default function CandidateDashboardClient({ candidate, applications }) {
         <div className="profile-header-meta">
           <div className="skills-perc-badge">
             <div className="badge-title">Skills Score</div>
-            <div className="badge-val">{skills.length * 15}%</div>
+            <div className="badge-val op-grad-text">{skills.length * 15}%</div>
           </div>
         </div>
       </div>

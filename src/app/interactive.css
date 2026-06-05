@@ -86,7 +86,9 @@
   border-color: var(--op-indigo) !important;
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15) !important;
 }
-.tab-btn.active { color: var(--op-indigo) !important; }
+.tab-btn { transition: background 0.2s var(--op-ease), color 0.2s var(--op-ease); border-radius: 10px; }
+.tab-btn:hover { background: rgba(79, 70, 229, 0.05); }
+.tab-btn.active { color: var(--op-indigo) !important; background: rgba(79, 70, 229, 0.08); }
 .status-badge.shortlisted, .status-badge.selected, .status-badge.hired { color: #fff; }
 .card { transition: box-shadow 0.3s var(--op-ease), transform 0.3s var(--op-ease); }
 
