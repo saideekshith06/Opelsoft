@@ -1,7 +1,6 @@
 import pool from '@/lib/db';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import ApplyModal from '@/components/ApplyModal';
 
 async function getJobDetail(id) {
   try {
@@ -94,7 +93,7 @@ export default async function JobDetailPage({ params }) {
           {/* Sidebar */}
           <aside style={{ display: 'flex', flexDirection: 'column', gap: '16px', position: 'sticky', top: '90px' }}>
             <div className="card-light" style={{ padding: '24px', textAlign: 'center' }}>
-              <ApplyModal jobId={job.id} jobTitle={job.title} />
+              <Link href="/jobs" className="op-btn op-grad-bg" style={{ display: 'block', width: '100%', padding: '14px', borderRadius: '12px', fontWeight: '700', color: '#fff', textDecoration: 'none', textAlign: 'center' }}>Apply now</Link>
               <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: '14px' }}><strong>Closes:</strong> {closing}</p>
             </div>
             <div className="card-light" style={{ padding: '24px' }}>

@@ -46,9 +46,9 @@ export default function Footer() {
           <div className="df-col">
             <h4 className="df-col-title">Platform</h4>
             <ul className="df-links">
-              <li><Link href="/jobs">Browse Jobs</Link></li>
-              <li><Link href="/dashboard/candidate">Candidate Dashboard</Link></li>
+              <li><Link href="/jobs">Find Jobs</Link></li>
               <li><Link href="/talent-staffing">Talent &amp; Staffing</Link></li>
+              <li><Link href="/enterprise-solutions">Enterprise Solutions</Link></li>
               <li><Link href="/about-us">About Us</Link></li>
             </ul>
           </div>
@@ -59,8 +59,8 @@ export default function Footer() {
             <ul className="df-links">
               <li><Link href="/about-us">About Us</Link></li>
               <li><Link href="/contact-us">Contact</Link></li>
-              <li><Link href="/talent-staffing">Talent &amp; Staffing</Link></li>
-              <li><Link href="/register">Join OpelSoft</Link></li>
+              <li><Link href="/enterprise-solutions">Enterprise Solutions</Link></li>
+              <li><Link href="/contact-us">Get in touch</Link></li>
             </ul>
           </div>
 

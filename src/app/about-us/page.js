@@ -39,10 +39,10 @@ export default function AboutUsPage() {
             <Reveal>
               <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.22em', color: 'var(--op-indigo)', fontWeight: '700', marginBottom: '18px' }}>About OpelSoft</div>
               <h1 style={{ fontSize: 'clamp(2.4rem, 5.2vw, 3.8rem)', fontWeight: '800', letterSpacing: '-0.045em', lineHeight: '1.06', marginBottom: '20px' }}>
-                Connecting <span className="op-grad-text">talent</span> with <span className="op-grad-text">opportunity</span>
+                Software, consulting &amp; <span className="op-grad-text">specialist talent</span>
               </h1>
-              <p style={{ fontSize: 'clamp(1.05rem, 2vw, 1.25rem)', color: 'var(--text-secondary)', lineHeight: '1.6', maxWidth: '520px', marginBottom: '28px' }}>
-                OpelSoft is a specialist talent and staffing platform. We help exceptional people find roles with the teams building advanced technology, and help those teams hire the rare skills they need.
+              <p style={{ fontSize: 'clamp(1.05rem, 2vw, 1.25rem)', color: 'var(--text-secondary)', lineHeight: '1.6', maxWidth: '540px', marginBottom: '28px' }}>
+                OpelSoft is an IT consulting and staffing firm that <strong style={{ color: 'var(--text-primary)' }}>provides <span className="op-grad-text">Software Development &amp; IT Consulting Services to Fortune 500 clients across the US</span></strong>, and connects exceptional people with the teams building what&apos;s next.
               </p>
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
                 <Link href="/jobs" className="op-btn op-grad-bg" style={{ padding: '13px 28px', borderRadius: '30px', fontWeight: '700', color: '#fff', textDecoration: 'none', boxShadow: 'var(--shadow-md)' }}>Explore roles</Link>
@@ -66,7 +66,7 @@ export default function AboutUsPage() {
       <section style={{ background: '#0B0B0F', color: '#fff', borderBottom: '1px solid var(--border-color)' }}>
         <div className="container" style={{ padding: '52px 0' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '24px', textAlign: 'center' }}>
-            {[{ v: 8, s: '+', l: 'Specialisms' }, { v: 20, s: '+', l: 'Industries served' }, { v: 100, s: '%', l: 'Verified employers' }, { v: 24, s: '/7', l: 'Talent sourcing' }].map((m, i) => (
+            {[{ v: 15, s: '+', l: 'Years of experience' }, { v: 20, s: '+', l: 'Industries served' }, { v: 500, s: '+', l: 'Projects delivered' }, { v: 100, s: '%', l: 'Client commitment' }].map((m, i) => (
               <Reveal key={i} delay={(i % 4) + 1}>
                 <div style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: '800', letterSpacing: '-0.03em' }}><CountUp value={m.v} suffix={m.s} /></div>
                 <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.55)', marginTop: '6px', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: '600' }}>{m.l}</div>
@@ -81,12 +81,12 @@ export default function AboutUsPage() {
         <div className="container" style={{ maxWidth: '820px', textAlign: 'center' }}>
           <Reveal>
             <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--op-indigo)', fontWeight: '700', marginBottom: '14px' }}>Our Mission</div>
-            <h2 style={{ fontSize: 'clamp(1.9rem, 4vw, 2.7rem)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '20px' }}>Make great careers in advanced tech accessible</h2>
+            <h2 style={{ fontSize: 'clamp(1.9rem, 4vw, 2.7rem)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '20px' }}>Your partner for software, consulting, and talent</h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.08rem', lineHeight: '1.8', marginBottom: '18px' }}>
-              The most important work of the next decade is being built by small, ambitious technical teams, yet the best people and the best opportunities rarely find each other easily.
+              OpelSoft pairs deep engineering capability with specialist recruiting. We build and modernize software, advise on technology strategy, and place the rare skills ambitious teams need, all under one roof.
             </p>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.08rem', lineHeight: '1.8' }}>
-              OpelSoft exists to close that gap, pairing deep specialism with a clean, human hiring experience. Whether you are taking the next step in your career or scaling a technical team, we make the process seamless.
+              From Fortune 500 enterprises to fast-scaling teams, we focus on outcomes: dependable software, pragmatic IT consulting, and people who fit, delivered with senior expertise and a genuine commitment to your success.
             </p>
           </Reveal>
         </div>

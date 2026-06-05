@@ -45,7 +45,7 @@ export default function TalentStaffingPage() {
                 OpelSoft connects organizations with vetted professionals across technology, engineering, healthcare, and the wider professional landscape, through contract, direct-hire, and executive search.
               </p>
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
-                <Link href="/register" className="op-btn op-grad-bg" style={{ padding: '13px 28px', borderRadius: '30px', fontWeight: '700', color: '#fff', textDecoration: 'none', boxShadow: 'var(--shadow-md)' }}>Hire talent</Link>
+                <Link href="/contact-us" className="op-btn op-grad-bg" style={{ padding: '13px 28px', borderRadius: '30px', fontWeight: '700', color: '#fff', textDecoration: 'none', boxShadow: 'var(--shadow-md)' }}>Hire talent</Link>
                 <Link href="/contact-us" className="op-btn" style={{ padding: '13px 28px', borderRadius: '30px', fontWeight: '700', border: '1px solid var(--border-color)', background: '#fff', color: '#09090b', textDecoration: 'none' }}>Talk to us</Link>
               </div>
             </Reveal>
@@ -159,7 +159,7 @@ export default function TalentStaffingPage() {
               <p style={{ fontSize: '1.15rem', opacity: 0.92, maxWidth: '520px', margin: '0 auto 34px', lineHeight: '1.6', position: 'relative' }}>Tell us the roles you need filled and how you like to engage, we&apos;ll take it from there.</p>
               <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap', position: 'relative' }}>
                 <Link href="/contact-us" className="op-btn" style={{ padding: '14px 30px', borderRadius: '30px', fontSize: '1rem', fontWeight: '700', background: '#fff', color: 'var(--op-indigo)', textDecoration: 'none', boxShadow: 'var(--shadow-md)' }}>Start a conversation</Link>
-                <Link href="/register" className="op-btn" style={{ padding: '14px 30px', borderRadius: '30px', fontSize: '1rem', fontWeight: '700', background: 'rgba(255,255,255,0.14)', color: '#fff', border: '1px solid rgba(255,255,255,0.3)', textDecoration: 'none' }}>Create employer account</Link>
+                <Link href="/enterprise-solutions" className="op-btn" style={{ padding: '14px 30px', borderRadius: '30px', fontSize: '1rem', fontWeight: '700', background: 'rgba(255,255,255,0.14)', color: '#fff', border: '1px solid rgba(255,255,255,0.3)', textDecoration: 'none' }}>Enterprise solutions</Link>
               </div>
             </div>
           </Reveal>

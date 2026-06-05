@@ -7,10 +7,12 @@
       "Bash(git stash *)",
       "Bash([ -f \"$f\" ])",
       "Bash(git reset *)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(cat >> *)"
     ],
     "additionalDirectories": [
-      "c:\\Users\\badam\\.claude\\projects\\c--Projects-Opelsoft\\memory"
+      "c:\\Users\\badam\\.claude\\projects\\c--Projects-Opelsoft\\memory",
+      "C:\\Projects\\Opelsoft\\scripts"
     ]
   }
 }

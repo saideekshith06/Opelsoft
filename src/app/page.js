@@ -55,7 +55,7 @@ const STEPS = [
 ];
 
 const SERVICES = [
-  { tint: '#4F46E5', name: 'Job Board', body: 'Thousands of live roles to search, filter, and apply to in minutes.', href: '/jobs', icon: <><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></> }, { tint: '#7C3AED', name: 'Talent & Staffing', body: 'Contract, direct-hire, and executive search for AI, robotics, and deep-tech teams.', href: '/talent-staffing', icon: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></> }, { tint: '#0EA5E9', name: 'Candidate Profiles', body: 'A complete profile and CV you build once and reuse everywhere.', href: '/register', icon: <><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></> }, { tint: '#10B981', name: 'Application Tracking', body: 'A single dashboard to follow every application from submitted to offer.', href: '/dashboard/candidate', icon: <path d="M22 12h-4l-3 9L9 3l-3 9H2" /> }, { tint: '#F59E0B', name: 'Executive Search', body: 'Confidential senior-leadership and C-suite placement, matched to fit.', href: '/talent-staffing#solutions', icon: <><circle cx="12" cy="8" r="6" /><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5" /></> }, { tint: '#EF4444', name: 'Career Resources', body: 'Guidance and a growing library to help you take the next step.', href: '/about-us', icon: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></> },
+  { tint: '#4F46E5', name: 'Job Board', body: 'Thousands of live roles to search, filter, and apply to in minutes.', href: '/jobs', icon: <><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></> }, { tint: '#7C3AED', name: 'Talent & Staffing', body: 'Contract, direct-hire, and executive search for AI, robotics, and deep-tech teams.', href: '/talent-staffing', icon: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></> }, { tint: '#0EA5E9', name: 'Candidate Profiles', body: 'A complete profile and CV you build once and reuse everywhere.', href: '/jobs', icon: <><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></> }, { tint: '#10B981', name: 'Application Tracking', body: 'A single dashboard to follow every application from submitted to offer.', href: '/jobs', icon: <path d="M22 12h-4l-3 9L9 3l-3 9H2" /> }, { tint: '#F59E0B', name: 'Executive Search', body: 'Confidential senior-leadership and C-suite placement, matched to fit.', href: '/talent-staffing#solutions', icon: <><circle cx="12" cy="8" r="6" /><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5" /></> }, { tint: '#EF4444', name: 'Career Resources', body: 'Guidance and a growing library to help you take the next step.', href: '/about-us', icon: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></> },
 ];
 
 const FAQS = [
@@ -98,7 +98,7 @@ export default async function Home() {
                   Explore open roles
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
                 </Link>
-                <Link href="/register" className="op-btn" style={{ padding: '15px 32px', borderRadius: '14px', fontWeight: '700', fontSize: '1.02rem', border: '1px solid var(--border-color)', background: '#fff', color: '#09090b', textDecoration: 'none' }}>
+                <Link href="/jobs" className="op-btn" style={{ padding: '15px 32px', borderRadius: '14px', fontWeight: '700', fontSize: '1.02rem', border: '1px solid var(--border-color)', background: '#fff', color: '#09090b', textDecoration: 'none' }}>
                   Create your profile
                 </Link>
               </div>
@@ -205,7 +205,7 @@ export default async function Home() {
             ))}
           </div>
           <Reveal style={{ textAlign: 'center', marginTop: '44px' }}>
-            <Link href="/register" className="op-btn op-grad-bg" style={{ display: 'inline-block', padding: '14px 30px', borderRadius: '30px', fontWeight: '700', color: '#fff', textDecoration: 'none', boxShadow: 'var(--shadow-md)' }}>Get started, it&apos;s free</Link>
+            <Link href="/jobs" className="op-btn op-grad-bg" style={{ display: 'inline-block', padding: '14px 30px', borderRadius: '30px', fontWeight: '700', color: '#fff', textDecoration: 'none', boxShadow: 'var(--shadow-md)' }}>Get started, it&apos;s free</Link>
           </Reveal>
         </div>
       </section>
@@ -310,7 +310,7 @@ export default async function Home() {
               <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: '800', letterSpacing: '-0.04em', marginBottom: '14px', position: 'relative' }}>Ready to take the next step?</h2>
               <p style={{ fontSize: '1.2rem', opacity: 0.92, maxWidth: '540px', margin: '0 auto 36px', lineHeight: '1.6', position: 'relative' }}>Join OpelSoft today and find your next role.</p>
               <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap', position: 'relative' }}>
-                <Link href="/register" className="op-btn" style={{ padding: '14px 30px', borderRadius: '30px', fontSize: '1rem', fontWeight: '700', background: '#fff', color: 'var(--op-indigo)', textDecoration: 'none', boxShadow: 'var(--shadow-md)' }}>Get Started Free</Link>
+                <Link href="/jobs" className="op-btn" style={{ padding: '14px 30px', borderRadius: '30px', fontSize: '1rem', fontWeight: '700', background: '#fff', color: 'var(--op-indigo)', textDecoration: 'none', boxShadow: 'var(--shadow-md)' }}>Get Started Free</Link>
                 <Link href="/jobs" className="op-btn" style={{ padding: '14px 30px', borderRadius: '30px', fontSize: '1rem', fontWeight: '700', background: 'rgba(255,255,255,0.14)', color: '#fff', border: '1px solid rgba(255,255,255,0.3)', textDecoration: 'none' }}>Browse Jobs</Link>
               </div>
             </div>
