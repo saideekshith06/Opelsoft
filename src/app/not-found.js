@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Decor from '@/components/ui/Decor';
 
 export const metadata = {
-  title: 'Page not found — OpelSoft',
+  title: 'Page not found - OpelSoft',
 };
 
 export default function NotFound() {

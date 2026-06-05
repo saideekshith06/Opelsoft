@@ -306,7 +306,7 @@ export default function CandidateDashboardClient({ candidate, applications }) {
                     />
                   </div>
                   <div className="form-group">
-                    <label className="form-label">Minimum Salary Expected (£)</label>
+                    <label className="form-label">Minimum Salary Expected ($)</label>
                     <input 
                       type="text" 
                       className="form-control" 

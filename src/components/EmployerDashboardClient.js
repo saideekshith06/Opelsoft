@@ -213,7 +213,7 @@ export default function EmployerDashboardClient({ employer, jobs, applications, 
                             </span>
                           </td>
                           <td className="app-job-meta">{job.city || 'London'}, {job.country || 'UK'}</td>
-                          <td className="app-job-meta">£{job.salary_package || 'Undisclosed'}</td>
+                          <td className="app-job-meta">${job.salary_package || 'Undisclosed'}</td>
                           <td className="app-job-meta">
                             {new Date(job.created_at).toLocaleDateString('en-GB')}
                           </td>
@@ -339,7 +339,7 @@ export default function EmployerDashboardClient({ employer, jobs, applications, 
 
                 <div className="form-row-2">
                   <div className="form-group">
-                    <label className="form-label">Salary Package Expected (£)</label>
+                    <label className="form-label">Salary Package Expected ($)</label>
                     <input 
                       type="text" 
                       className="form-control" 

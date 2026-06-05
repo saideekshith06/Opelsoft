@@ -20,7 +20,7 @@ const SOLUTIONS = [
 ];
 
 const MODELS = [
-  { tint: '#4F46E5', name: 'Contract / Temporary', body: 'Flexible capacity for projects, peaks, and specialised skills, scale up or down on demand.', icon: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></> }, { tint: '#7C3AED', name: 'Direct Hire', body: 'Permanent placements where we source, screen, and shortlist so you only meet the best.', icon: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><polyline points="17 11 19 13 23 9" /></> }, { tint: '#0EA5E9', name: 'Contract-to-Hire', body: 'Try-before-you-hire engagements that de-risk permanent decisions.', icon: <><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></> }, { tint: '#10B981', name: 'Managed Capacity', body: 'A dedicated, outcome-based team that owns a function or workstream end to end.', icon: <><polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" /></> },
+  { tint: '#4F46E5', name: 'Contract / Temporary', body: 'Flexible capacity for projects, peaks, and specialized skills, scale up or down on demand.', icon: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></> }, { tint: '#7C3AED', name: 'Direct Hire', body: 'Permanent placements where we source, screen, and shortlist so you only meet the best.', icon: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><polyline points="17 11 19 13 23 9" /></> }, { tint: '#0EA5E9', name: 'Contract-to-Hire', body: 'Try-before-you-hire engagements that de-risk permanent decisions.', icon: <><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></> }, { tint: '#10B981', name: 'Managed Capacity', body: 'A dedicated, outcome-based team that owns a function or workstream end to end.', icon: <><polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" /></> },
 ];
 
 const VALUES = [
@@ -76,7 +76,7 @@ export default function TalentStaffingPage() {
       <section style={{ background: '#0B0B0F', color: '#fff', borderBottom: '1px solid var(--border-color)' }}>
         <div className="container" style={{ padding: '52px 0' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '24px', textAlign: 'center' }}>
-            {[{ v: 6, s: '', l: 'Specialisms' }, { v: 4, s: '', l: 'Engagement models' }, { v: 20, s: '+', l: 'Industries served' }, { v: 24, s: '/7', l: 'Sourcing coverage' }].map((m, i) => (
+            {[{ v: 6, s: '', l: 'Specialties' }, { v: 4, s: '', l: 'Engagement models' }, { v: 20, s: '+', l: 'Industries served' }, { v: 24, s: '/7', l: 'Sourcing coverage' }].map((m, i) => (
               <Reveal key={i} delay={(i % 4) + 1}>
                 <div style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: '800', letterSpacing: '-0.03em' }}><CountUp value={m.v} suffix={m.s} /></div>
                 <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.55)', marginTop: '6px', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: '600' }}>{m.l}</div>

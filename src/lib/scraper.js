@@ -1,7 +1,7 @@
 // Playwright-backed scraper for custom (non-Greenhouse/non-Lever) career pages.
 // Renders the page in a real browser so JavaScript-rendered listings are visible,
 // then extracts a structured job list via the shared LLM helper, with a heuristic
-// DOM fallback. Never throws to the caller and never fabricates jobs — returns []
+// DOM fallback. Never throws to the caller and never fabricates jobs - returns []
 // when it cannot find anything.
 
 import { callLLMForJson } from './llm.js';
@@ -71,7 +71,7 @@ export async function closeScraperBrowser() {
     try {
       await holder.browser.close();
     } catch {
-      // ignore — best effort
+      // ignore - best effort
     }
     holder.browser = null;
   }

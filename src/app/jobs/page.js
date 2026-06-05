@@ -3,7 +3,7 @@ import Decor from '@/components/ui/Decor';
 import Reveal from '@/components/ui/Reveal';
 
 export const metadata = {
-  title: 'Find Jobs — OpelSoft',
+  title: 'Find Jobs - OpelSoft',
   description: 'Share your details and our team will match you with the right opportunities, with a response within 1 working day.',
 };
 
@@ -22,7 +22,7 @@ export default function JobsPage() {
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(330px, 1fr))', gap: '52px', alignItems: 'start' }}>
 
-            {/* LEFT — value + benefits */}
+            {/* LEFT - value + benefits */}
             <Reveal>
               <div style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.22em', color: 'var(--op-indigo)', fontWeight: '700', marginBottom: '16px' }}>For Candidates</div>
               <h1 style={{ fontSize: 'clamp(2.2rem, 4.6vw, 3.4rem)', fontWeight: '800', letterSpacing: '-0.04em', lineHeight: '1.06', marginBottom: '18px' }}>
@@ -52,7 +52,7 @@ export default function JobsPage() {
               </div>
             </Reveal>
 
-            {/* RIGHT — form */}
+            {/* RIGHT - form */}
             <Reveal delay={2}>
               <JobIntakeForm />
             </Reveal>

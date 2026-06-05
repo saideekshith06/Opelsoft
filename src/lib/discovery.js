@@ -1,13 +1,13 @@
 // Autonomous discovery of relevant company career pages.
 //
 // Two complementary, optional sources (both fail gracefully):
-//   1. Groq compound model — has built-in web search; stays within the Groq key.
-//   2. SerpApi (Google engine) — used only when SERPAPI_API_KEY is set.
+//   1. Groq compound model - has built-in web search; stays within the Groq key.
+//   2. SerpApi (Google engine) - used only when SERPAPI_API_KEY is set.
 //
 // Returns a deduped list of { url, company } career-page candidates that the
 // existing scraper can then crawl.
 
-// compound-mini does a single web search (smaller context) — fits the free tier,
+// compound-mini does a single web search (smaller context) - fits the free tier,
 // where full `groq/compound` can hit 413/429. Override via GROQ_COMPOUND_MODEL.
 const GROQ_COMPOUND_MODEL = process.env.GROQ_COMPOUND_MODEL || 'groq/compound-mini';
 const DISCOVERY_MAX_URLS = process.env.DISCOVERY_MAX_URLS ? parseInt(process.env.DISCOVERY_MAX_URLS, 10) : 12;

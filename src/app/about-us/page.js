@@ -5,7 +5,7 @@ import Decor from '@/components/ui/Decor';
 import StatsBand from '@/components/ui/StatsBand';
 
 export const metadata = {
-  title: 'About OpelSoft — Software Development & IT Consulting', description: 'OpelSoft provides Software Development & IT Consulting Services to Fortune 500 clients across the US, with staffing and consulting across Banking, Healthcare, Telecom, Insurance, Retail and more.',
+  title: 'About OpelSoft - Software Development & IT Consulting', description: 'OpelSoft provides Software Development & IT Consulting Services to Fortune 500 clients across the US, with staffing and consulting across Banking, Healthcare, Telecom, Insurance, Retail and more.',
 };
 
 function Icon({ tint, children }) {
@@ -81,7 +81,7 @@ export default function AboutUsPage() {
               We believe OpelSoft is an exceptional company, a company of people proud of the work they do and the solutions they provide.
             </p>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.08rem', lineHeight: '1.8', marginBottom: '18px' }}>
-              By understanding our specialty industries, following a disciplined process to identify quality candidates, and partnering with employers to understand their core business and hiring needs, we deliver exceptional service, and great results for everyone involved.
+              By understanding our specialty industries, following a disciplined process to identify quality candidates, and partnering with employers to understand their core business and hiring needs, we deliver exceptional service and great results for everyone involved.
             </p>
             <p style={{ color: 'var(--text-light)', fontSize: '0.96rem', lineHeight: '1.7' }}>
               Headquartered in Edison, NJ, with an offshore delivery center in Hyderabad, India, serving multinational customers.

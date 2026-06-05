@@ -60,7 +60,7 @@ const SERVICES = [
 ];
 
 const FAQS = [
-  { q: 'Is OpelSoft free for candidates?', a: 'Yes. Creating a profile, browsing jobs, and applying to roles is completely free for job seekers.' }, { q: 'How do I apply for a job?', a: 'Create a candidate account, complete your profile and upload your CV, then click Apply on any listing and add a short cover note.' }, { q: 'How do employers post a job?', a: 'Register an employer account and use your dashboard to post a listing with the title, description, requirements, location, and salary.' }, { q: 'Can I track my applications?', a: 'Yes. Your candidate dashboard shows every job you have applied to along with its current hiring status.' },
+  { q: 'How do I get started as a candidate?', a: 'Go to Find Jobs and submit your details. Our recruiters review every submission and reach out within one working day to discuss the right opportunities for you.' }, { q: 'Which work authorizations does OpelSoft work with?', a: 'We work with OPT, CPT, H-1B, candidates who need H-1B sponsorship, Green Card holders, and U.S. citizens.' }, { q: 'What does OpelSoft do?', a: 'OpelSoft provides software development and IT consulting services to Fortune 500 clients across the US, along with contract staffing, direct placements, and bench sales.' }, { q: 'How can companies work with OpelSoft?', a: 'Visit Enterprise Solutions or Talent and Staffing and get in touch. Our team will scope the right engagement, whether that is a project, a managed team, or a key hire.' },
 ];
 
 const TICKER = ['AI Engineer', 'Robotics Engineer', 'Machine Learning Engineer', 'Computer Vision Engineer', 'Data Scientist', 'MLOps Engineer', 'Automation Engineer', 'Research Scientist', 'Embedded Systems Engineer', 'Software Engineer', 'Product Manager', 'UX Designer', 'DevOps Engineer', 'Project Manager'];
@@ -253,7 +253,7 @@ export default async function Home() {
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '18px' }}>
                     {job.city && <span style={{ fontSize: '0.76rem', fontWeight: '600', color: 'var(--text-secondary)', background: 'var(--bg-color)', border: '1px solid var(--border-color)', borderRadius: '20px', padding: '4px 10px' }}>📍 {job.city}</span>}
                     {job.job_type && <span style={{ fontSize: '0.76rem', fontWeight: '600', color: 'var(--op-indigo)', background: 'rgba(79,70,229,0.08)', borderRadius: '20px', padding: '4px 10px' }}>{job.job_type}</span>}
-                    {job.salary_package && <span style={{ fontSize: '0.76rem', fontWeight: '600', color: 'var(--text-secondary)', background: 'var(--bg-color)', border: '1px solid var(--border-color)', borderRadius: '20px', padding: '4px 10px' }}>£{job.salary_package.split('-')[0]}/yr</span>}
+                    {job.salary_package && <span style={{ fontSize: '0.76rem', fontWeight: '600', color: 'var(--text-secondary)', background: 'var(--bg-color)', border: '1px solid var(--border-color)', borderRadius: '20px', padding: '4px 10px' }}>${job.salary_package.split('-')[0]}/yr</span>}
                   </div>
                 </div>
               </Reveal>

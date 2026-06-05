@@ -234,7 +234,7 @@ export default function CandidateAiAgent() {
                   <div className="match-meta-info">
                     <span>📍 {match.location || 'Remote'}</span>
                     <span>💼 {match.job_type || 'Full-time'}</span>
-                    <span>💰 £{match.salary || 'Competitive'}</span>
+                    <span>💰 ${match.salary || 'Competitive'}</span>
                   </div>
 
                   <div className="match-reasoning">

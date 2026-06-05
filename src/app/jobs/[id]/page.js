@@ -23,7 +23,7 @@ function formatSalary(pkg) {
   if (!pkg) return null;
   const fmt = (n) => {
     const x = Number(String(n).replace(/[^0-9.]/g, ''));
-    return Number.isNaN(x) || x === 0 ? String(n).trim() : '£' + x.toLocaleString('en-GB');
+    return Number.isNaN(x) || x === 0 ? String(n).trim() : '$' + x.toLocaleString('en-US');
   };
   const parts = String(pkg).split('-').map((s) => s.trim()).filter(Boolean);
   return parts.length >= 2 ? `${fmt(parts[0])} to ${fmt(parts[1])}` : fmt(parts[0]);
@@ -38,7 +38,7 @@ export default async function JobDetailPage({ params }) {
   const job = await getJobDetail(id);
   if (!job) notFound();
 
-  const closing = job.closing_date ? new Date(job.closing_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Not specified';
+  const closing = job.closing_date ? new Date(job.closing_date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Not specified';
 
   const overview = [
     { label: 'Salary', value: job.salary_package ? formatSalary(job.salary_package) : 'Undisclosed', icon: <><rect x="2" y="6" width="20" height="12" rx="2" /><circle cx="12" cy="12" r="2" /></> }, { label: 'Job Type', value: job.job_type || 'Full-time', icon: <><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></> }, { label: 'Experience', value: job.experience || 'Not specified', icon: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></> }, { label: 'Industry', value: job.industry || 'Technology', icon: <><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></> }, { label: 'Qualification', value: job.qualification ? job.qualification.replace('-', ' ') : 'Not specified', icon: <path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /> }, ];

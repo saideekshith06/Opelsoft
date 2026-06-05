@@ -75,10 +75,10 @@ export async function POST(req) {
     await sendMail({
       to: RECIPIENT,
       replyTo: email,
-      subject: `New candidate enquiry — ${name}`,
+      subject: `New candidate inquiry - ${name}`,
       text: `A candidate submitted the Find Jobs form on OpelSoft.\n\nName: ${name}\nContact: ${contact}\nEmail: ${email}\nExperience: ${experience}\nWork authorization: ${workAuth}\n`,
       html: `<div style="font-family:Arial,sans-serif;font-size:15px;color:#0f172a">
-        <h2 style="margin:0 0 12px">New candidate enquiry</h2>
+        <h2 style="margin:0 0 12px">New candidate inquiry</h2>
         <p style="margin:0 0 16px;color:#475569">Submitted via the OpelSoft Find Jobs form.</p>
         <table style="border-collapse:collapse">
           <tr><td style="padding:6px 16px 6px 0;color:#64748b">Name</td><td style="padding:6px 0;font-weight:600">${esc(name)}</td></tr>
@@ -93,7 +93,7 @@ export async function POST(req) {
     // 2) Auto-reply to the candidate
     await sendMail({
       to: email,
-      subject: 'We received your details — OpelSoft',
+      subject: 'We received your details - OpelSoft',
       text: `Hi ${name},\n\nThank you for reaching out to OpelSoft. Our executives will review your details and one of our team members will contact you within 1 working day.\n\nWarm regards,\nThe OpelSoft Team`,
       html: `<div style="font-family:Arial,sans-serif;font-size:15px;color:#0f172a;line-height:1.6">
         <p>Hi ${esc(name)},</p>

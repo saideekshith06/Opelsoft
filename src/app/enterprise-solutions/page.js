@@ -4,7 +4,7 @@ import Decor from '@/components/ui/Decor';
 import StatsBand from '@/components/ui/StatsBand';
 
 export const metadata = {
-  title: 'Enterprise Solutions — OpelSoft',
+  title: 'Enterprise Solutions - OpelSoft',
   description: 'OpelSoft provides Software Development & IT Consulting Services to Fortune 500 clients across the US.',
 };
 

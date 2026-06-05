@@ -102,7 +102,7 @@ export async function executeAgentPipeline(userId, addLog) {
         const key = d.url.replace(/\/$/, '');
         if (knownUrls.has(key)) continue;
         knownUrls.add(key);
-        // Ephemeral source (no DB id) — crawled this run, not persisted to the user's list
+        // Ephemeral source (no DB id) - crawled this run, not persisted to the user's list
         sources.push({ id: null, url: d.url, source_type: 'discovered', ephemeral: true });
       }
     } catch (discErr) {
@@ -244,7 +244,7 @@ export async function executeAgentPipeline(userId, addLog) {
 
 CANDIDATE PROFILE:
 - Title: ${candidate.job_title || 'Software Engineer'}
-- Expected Salary: £${candidate.minimum_salary || '50000'}
+- Expected Salary: $${candidate.minimum_salary || '50000'}
 - Skills: ${JSON.stringify(candidateSkills)}
 - Experience: ${JSON.stringify(candidateExp)}
 - Education: ${JSON.stringify(candidateEdu)}
