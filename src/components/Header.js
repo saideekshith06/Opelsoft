@@ -42,10 +42,6 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="nv-actions">
-            <Link href="/contact-us" className="nv-cta">Get in touch</Link>
-          </div>
-
           <button className={`nv-burger${mobile ? ' open' : ''}`} aria-label="Toggle menu" aria-expanded={mobile} onClick={() => setMobile(!mobile)}>
             <span /><span /><span />
           </button>
@@ -57,9 +53,6 @@ export default function Header() {
         {NAV.map((item) => (
           <Link key={item.name} href={item.path} className={pathname === item.path ? 'active' : ''}>{item.name}</Link>
         ))}
-        <div className="nv-drawer-actions">
-          <Link href="/contact-us" className="nv-cta">Get in touch</Link>
-        </div>
       </div>
     </>
   );
