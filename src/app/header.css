@@ -35,8 +35,8 @@
 .nv-logo { display: flex; align-items: center; flex-shrink: 0; }
 .nv-logo img { height: 34px; width: auto; display: block; }
 
-/* Desktop links — centered */
-.nv-links { display: flex; align-items: center; gap: 2px; margin: 0 auto; }
+/* Desktop links — centered across the full bar */
+.nv-links { display: flex; align-items: center; gap: 2px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
 
 .nv-item { position: relative; }
 
