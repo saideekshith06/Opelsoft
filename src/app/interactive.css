@@ -78,6 +78,11 @@
   backdrop-filter: saturate(180%) blur(16px);
   -webkit-backdrop-filter: saturate(180%) blur(16px);
   border-bottom: 1px solid rgba(9, 9, 11, 0.08) !important;
+  /* The body is a flex column, so the header was being shrunk below its set
+     height. Lock it so --header-height actually takes effect. */
+  flex-shrink: 0 !important;
+  min-height: var(--header-height) !important;
+  height: var(--header-height) !important;
 }
 .fs-header.scrolled {
   background: rgba(255, 255, 255, 0.86) !important;
